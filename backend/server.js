@@ -42,9 +42,15 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-async function start() {
+if (process.env.VERCEL) {
   await connectDB();
-  app.listen(PORT, () => console.log(`Wanderly API running on port ${PORT}`));
+} else {
+  async function start() {
+    await connectDB();
+    app.listen(PORT, () => console.log(`Wanderly API running on port ${PORT}`));
+  }
+
+  start();
 }
 
-start();
+export default app;
