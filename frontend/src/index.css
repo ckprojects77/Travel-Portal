@@ -1,0 +1,69 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  @apply bg-white text-ink-900 antialiased;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Sora", system-ui, sans-serif;
+}
+
+::selection {
+  background: #0f8272;
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f0f9ff;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #0ea5e9, #16a08a);
+  border-radius: 999px;
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/70 backdrop-blur-xl border border-white/40;
+  }
+  .glass-dark {
+    @apply bg-ink-900/40 backdrop-blur-xl border border-white/10;
+  }
+  .btn-primary {
+    @apply relative overflow-hidden inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-teal-600 to-sky-600 px-6 py-3 font-semibold text-white shadow-soft transition-all duration-300 hover:shadow-glow hover:-translate-y-0.5 active:translate-y-0;
+  }
+  .btn-secondary {
+    @apply relative overflow-hidden inline-flex items-center justify-center gap-2 rounded-full border-2 border-teal-600 px-6 py-3 font-semibold text-teal-700 transition-all duration-300 hover:bg-teal-50 hover:-translate-y-0.5;
+  }
+  .btn-accent {
+    @apply relative overflow-hidden inline-flex items-center justify-center gap-2 rounded-full bg-sunset-500 px-6 py-3 font-semibold text-white shadow-soft transition-all duration-300 hover:bg-sunset-600 hover:-translate-y-0.5;
+  }
+  .card {
+    @apply rounded-3xl bg-white shadow-card border border-ink-900/5 transition-all duration-300;
+  }
+  .input-field {
+    @apply w-full rounded-2xl border border-ink-900/10 bg-white px-4 py-3 text-sm text-ink-900 outline-none transition focus:border-teal-500 focus:ring-2 focus:ring-teal-100;
+  }
+  .section-eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-teal-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-teal-700;
+  }
+  .skeleton {
+    @apply relative overflow-hidden bg-ink-900/5 before:absolute before:inset-0 before:-translate-x-full before:animate-shimmer before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent;
+  }
+}

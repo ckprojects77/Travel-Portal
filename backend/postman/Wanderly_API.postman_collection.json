@@ -1,0 +1,401 @@
+{
+  "info": {
+    "name": "Wanderly Backend API",
+    "description": "Attachable backend for the Wanderly Travel Booking Portal. Run 'npm run seed' first, then 'npm run dev'. Set {{baseUrl}} to your running server (default http://localhost:5000/api).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/health"
+      }
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Traveler\",\n  \"email\": \"test.traveler@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"+1 555 000 1111\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (customer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) { const data = pm.response.json(); pm.collectionVariables.set('token', data.token); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"demo@wanderly.travel\",\n  \"password\": \"demo1234\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) { const data = pm.response.json(); pm.collectionVariables.set('adminToken', data.token); }"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@wanderly.travel\",\n  \"password\": \"admin123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/me"
+          }
+        },
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/me",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+1 555 999 8888\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Toggle Saved Destination",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/me/saved/bali-indonesia"
+          }
+        },
+        {
+          "name": "Verify Admin Access Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/verify-admin-secret",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"change_me_admin_access_code\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Destinations",
+      "item": [
+        {
+          "name": "List All",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/destinations"
+          }
+        },
+        {
+          "name": "Search + Filter",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/destinations?q=bali&category=Beach&minRating=4&sort=price-asc"
+          }
+        },
+        {
+          "name": "Get One",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/destinations/bali-indonesia"
+          }
+        },
+        {
+          "name": "Create (admin only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/destinations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"test-destination\",\n  \"name\": \"Test City\",\n  \"country\": \"Testland\",\n  \"category\": \"Adventure\",\n  \"price\": 500,\n  \"image\": \"https://example.com/img.jpg\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update (admin only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/destinations/test-destination",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": 650\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete (admin only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/destinations/test-destination"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Packages",
+      "item": [
+        {
+          "name": "List All",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/packages"
+          }
+        },
+        {
+          "name": "Filter + Sort",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/packages?maxPrice=1200&sort=rating"
+          }
+        },
+        {
+          "name": "Get One",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/packages/bali-bliss-7d"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hotels",
+      "item": [
+        {
+          "name": "List All",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/hotels"
+          }
+        },
+        {
+          "name": "Get One",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/hotels/ubud-jungle-retreat"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking (customer)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/bookings",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"package\",\n  \"refId\": \"bali-bliss-7d\",\n  \"title\": \"Bali Bliss Retreat\",\n  \"travelers\": 2,\n  \"traveler\": { \"name\": \"Test Traveler\", \"email\": \"test.traveler@example.com\", \"phone\": \"+1 555 000 1111\" },\n  \"subtotal\": 1798,\n  \"taxes\": 144,\n  \"total\": 1942\n}"
+            }
+          }
+        },
+        {
+          "name": "My Bookings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/bookings/mine"
+          }
+        },
+        {
+          "name": "All Bookings (admin only)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/bookings"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users (admin only)",
+      "item": [
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/users"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "List Reviews",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/reviews"
+          }
+        },
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/reviews",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test Traveler\",\n  \"rating\": 5,\n  \"text\": \"Amazing trip!\",\n  \"targetType\": \"package\",\n  \"targetId\": \"bali-bliss-7d\"\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

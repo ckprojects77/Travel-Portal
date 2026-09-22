@@ -1,0 +1,38 @@
+export const testimonials = [
+  {
+    id: 1,
+    name: "Ananya Rao",
+    location: "Bengaluru, India",
+    rating: 5,
+    text: "Wanderly planned our Bali honeymoon down to the last detail. The villa was stunning and the sunrise trek was the highlight of our trip.",
+    avatar: "https://i.pravatar.cc/100?img=47",
+    trip: "Bali Bliss Retreat",
+  },
+  {
+    id: 2,
+    name: "James Whitfield",
+    location: "London, UK",
+    rating: 5,
+    text: "The Swiss Alps adventure exceeded every expectation. Seamless logistics, incredible guides, and views I still think about daily.",
+    avatar: "https://i.pravatar.cc/100?img=12",
+    trip: "Swiss Alps Adventure",
+  },
+  {
+    id: 3,
+    name: "Haruto Sato",
+    location: "Osaka, Japan",
+    rating: 4,
+    text: "Booking hotels and packages together saved us so much time. The Kyoto itinerary felt personal, not like a template.",
+    avatar: "https://i.pravatar.cc/100?img=33",
+    trip: "Kyoto Heritage Trail",
+  },
+  {
+    id: 4,
+    name: "Fatima Al-Sayed",
+    location: "Dubai, UAE",
+    rating: 5,
+    text: "From the riad to the desert camp, every part of our Marrakech trip felt curated. Customer support responded within minutes.",
+    avatar: "https://i.pravatar.cc/100?img=25",
+    trip: "Marrakech Explorer",
+  },
+];
